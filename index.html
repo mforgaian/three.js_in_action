@@ -44,8 +44,9 @@
 
         // main animation loop - calls every 50-60 ms
         let render = function () {
-            cube.position.x += STEP 
-            if (cube.position.x >3 || cube.position.x < -3) {
+            // cube.position.x += STEP 
+            // cube.rotation.y += STEP
+            if (cube.position.y >3 || cube.position.y < -3) {
                 STEP *= -1
             }
             renderer.render(scene, camera);
