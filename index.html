@@ -2,7 +2,6 @@
 
 <head>
     <title>2 - Display Sphere</title>
-    <link rel="stylesheet" href="Style.css">
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/109/three.min.js"></script> -->
     <script src="three.min.js"></script>
 </head>
@@ -10,12 +9,23 @@
 <body>
     <script>
         let scene, camera, renderer, cube, sphere;
-        STEP = 0.01
+        let cubes = []
+        STEP = 0.1
+
+        let randomInRange = function (from, to) {
+            let x = Math.random() * (to - from);
+            return x + from;
+        };
+
         let createCube = () => {
             let geometry = new THREE.BoxGeometry(1, 1, 1);
-            let material = new THREE.MeshBasicMaterial({ color: 0x00a1cb });
+            let material = new THREE.MeshBasicMaterial({ color: Math.random() * 0xffffff });
             cube = new THREE.Mesh(geometry, material);
+            cube.position.x = randomInRange(-15, 15)
+            cube.position.z = randomInRange(-15, 15)
+            cube.position.y = 15
             scene.add(cube);
+            cubes.push(cube)
         };
 
         let createSphere = function () {
@@ -46,12 +56,13 @@
             // play with changing background here
             // create an locate the camera
 
-            camera = new THREE.PerspectiveCamera(30,
+            camera = new THREE.PerspectiveCamera(75,
                 window.innerWidth / window.innerHeight,
                 1, 1000);
             camera.position.z = 20;
-            createSphere()
-            // createCube()
+            camera.position.y = -10;
+            // createSphere()
+            createCube()
             // showAxisHelper()
             // create the renderer   
             renderer = new THREE.WebGLRenderer();
@@ -63,12 +74,11 @@
 
         // main animation loop - calls every 50-60 ms
         let render = function () {
-            // sphere.position.y += STEP 
-            // sphere.rotation.y += STEP
-            sphere.rotation.y += STEP
-            if (sphere.position.y > 3 || sphere.position.y < -3) {
-                STEP *= -1
-            }
+            let x = Math.random();
+            if (x < 0.1)
+                createCube()
+
+            cubes.forEach(d => d.position.y -= STEP);
             renderer.render(scene, camera);
             // RAF
             requestAnimationFrame(render);
