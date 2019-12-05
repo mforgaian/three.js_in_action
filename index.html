@@ -8,25 +8,23 @@
 
 <body>
     <script>
-        let scene, camera, renderer, cube, sphere, text;
-        let cubes = []
-        STEP = 0.01
+        let scene, camera, renderer, text;
+        STEP = 0.06
 
-        let createTextGeometry = ()=> {
+        let createTextGeometry = () => {
             let loader = new THREE.FontLoader();
             loader.load('fonts/font-sample.json', function (font) {
-                var textGeo = new THREE.TextGeometry("Hello Gaian", {
+                let titles = "99 bottles of beer on the wall,\n99 bottles of beer.\nTake one down, pass it around,\n98 bottles of beer on the wall,\n98 bottles of beer.\nTake one down, pass it around,\n97 bottles of beer on the wall,\n97 bottles of beer.\nTake one down, pass it around,\n96 bottles of beer on the wall,\n96 bottles of beer.\nTake one down, pass it around,\n95 bottles of beer on the wall,\n95 bottles of beer.";
+
+                var textGeo = new THREE.TextGeometry(titles, {
                     font: font,
-                    size: 200,
-                    height: 50,
-                    curveSegments: 12,
-                    bevelThickness: 2,
-                    bevelSize: 5,
-                    bevelEnabled: true
+                    size: 3,
+                    height: 0.1
                 });
-                var textMaterial = new THREE.MeshPhongMaterial({ color: 0xff0000 });
+                var textMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
                 this.text = new THREE.Mesh(textGeo, textMaterial);
-                this.text.position.x = -15
+                this.text.position.x = -25;
+                this.text.rotation.x = -0.9;
                 scene.add(this.text);
             });
         };
@@ -45,11 +43,12 @@
             // play with changing background here
             // create an locate the camera
 
-            camera = new THREE.PerspectiveCamera(75,
+            camera = new THREE.PerspectiveCamera(70,
                 window.innerWidth / window.innerHeight,
-                1, 1000);
-            camera.position.z = 1000;
-            camera.position.x = 500;
+                1, 1500);
+            // camera.position.z = 1000;
+            // camera.position.x = 500;
+            camera.position.set(0, 5, 40);
             createTextGeometry()
             // create the renderer   
             renderer = new THREE.WebGLRenderer();
@@ -62,7 +61,8 @@
         // main animation loop - calls every 50-60 ms
         let render = function () {
             if (this.text) {
-                this.text.rotation.x += STEP
+                this.text.position.z -= STEP;
+                this.text.position.y += STEP / 2;
             }
             // text.rotation.y += STEP
             renderer.render(scene, camera);
@@ -70,7 +70,6 @@
             requestAnimationFrame(render);
         };
 
-        ///////////////////////////////////////////////
         init();
         render();
     </script>
