@@ -1,14 +1,14 @@
 <html>
 
 <head>
-    <title>2 - Display Sphere</title>
+    <title>6 - Material basics</title>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/109/three.min.js"></script> -->
     <script src="three.min.js"></script>
 </head>
 
 <body>
     <script>
-        let scene, camera, renderer, cube, sphere;
+        let scene, camera, renderer, cube, sphere, plane, normals, cube2;
         let cubes = []
         STEP = 0.1
 
@@ -17,9 +17,41 @@
             return x + from;
         };
 
+        let createGeometry = function () {
+            let geometry = new THREE.SphereGeometry(5, 30, 30, 0, Math.PI,
+                0, 2 * Math.PI);
+            let material = new THREE.MeshBasicMaterial({ color: 0Xc9b92b });
+
+            sphere1 = new THREE.Mesh(geometry, material);
+            sphere1.position.z = -6;
+            sphere1.position.y = -5;
+
+            geometry = new THREE.BoxGeometry(5, 5, 5);
+            material = new THREE.MeshBasicMaterial(
+                {
+                    wireframe: true,
+                    color: 0Xff0040, transparent: true,
+                    opacity: 0.8
+                });
+            material = new THREE.MeshNormalMaterial()
+            cube2 = new THREE.Mesh(geometry, material);
+            normals = new THREE.FaceNormalsHelper(cube2, 5);
+
+            geometry = new THREE.PlaneGeometry(1000, 1000, 50, 50);
+            material = new THREE.MeshBasicMaterial({ color: 0Xa6f995, wireframe: true });
+            plane = new THREE.Mesh(geometry, material);
+            plane.rotation.x = Math.PI / 2;
+            plane.position.y = -100;
+
+            scene.add(sphere1);
+            scene.add(cube2);
+            scene.add(plane);
+            scene.add(normals)
+        };
+
         let createCube = () => {
             let geometry = new THREE.BoxGeometry(1, 1, 1);
-            let material = new THREE.MeshBasicMaterial({ color: Math.random() * 0xffffff });
+            let material = new THREE.MeshBasicMaterial({ color: Math.random() * 0xffffff, transparent: true, opacity: 0.5 });
             cube = new THREE.Mesh(geometry, material);
             cube.position.x = randomInRange(-15, 15)
             cube.position.z = randomInRange(-15, 15)
@@ -63,6 +95,7 @@
             camera.position.y = -10;
             // createSphere()
             createCube()
+            createGeometry()
             // showAxisHelper()
             // create the renderer   
             renderer = new THREE.WebGLRenderer();
@@ -78,6 +111,9 @@
             if (x < 0.1)
                 createCube()
 
+            cube2.rotation.x += STEP
+            cube2.rotation.y += STEP
+            normals.update()
             cubes.forEach(d => d.position.y -= STEP);
             renderer.render(scene, camera);
             // RAF
