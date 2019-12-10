@@ -12,7 +12,7 @@
         let cubes = []
         STEP = 0.01
 
-        let createTextGeometry = ()=> {
+        let createTextGeometry = () => {
             let loader = new THREE.FontLoader();
             loader.load('fonts/font-sample.json', function (font) {
                 var textGeo = new THREE.TextGeometry("Hello Gaian", {
@@ -44,7 +44,8 @@
             scene.background = new THREE.Color(0xa10b00);
             // play with changing background here
             // create an locate the camera
-
+            light = new THREE.PointLight(0xffffff, 0.5)
+            scene.add(light)
             camera = new THREE.PerspectiveCamera(75,
                 window.innerWidth / window.innerHeight,
                 1, 1000);
@@ -64,6 +65,9 @@
             if (this.text) {
                 this.text.rotation.x += STEP
             }
+            light.rotation.x += STEP
+            light.rotation.y += STEP
+            light.rotation.Z += STEP
             // text.rotation.y += STEP
             renderer.render(scene, camera);
             // RAF
