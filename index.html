@@ -14,14 +14,16 @@
 
         let createGeometry = function () {
             // cubeGeometry = new THREE.BoxGeometry(5, 5, 5);
-            sphereGeometry = new THREE.SphereGeometry(5,30,30)
+            sphereGeometry = new THREE.SphereGeometry(5,5,5)
             materialNormal = new THREE.MeshNormalMaterial();
             materialBasic = new THREE.MeshBasicMaterial();
             material = new THREE.MeshDepthMaterial()
             materialLine = new THREE.LineBasicMaterial({color: 0xff0000, linewidth: 1})
             materialLineDashed = new THREE.LineDashedMaterial({color: 0xff0000, linewidth: 1, dashSize: 1, graphSize: 1})
+            materialPoints = new THREE.PointsMaterial({color: 0xff0000})
             // sphere1 = new THREE.Mesh(sphereGeometry, materialBasic)
-            sphere1 = new THREE.Line(sphereGeometry, materialLine)
+            // sphere1 = new THREE.Line(sphereGeometry, materialLine)
+            sphere1 = new THREE.Points(sphereGeometry, materialPoints)
             // sphere1 = new THREE.Line(sphereGeometry, materialBasic)
             // sphere1 = new THREE.Line(sphereGeometry, materialLineDashed)
             
