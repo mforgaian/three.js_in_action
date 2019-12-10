@@ -8,17 +8,27 @@
 
 <body>
     <script>
-        let scene, camera, renderer, cube, sphere, cone;
+        let scene, camera, renderer, cube, sphere, cone, light, light2;
         let cubes = []
         STEP = 0.1
 
         let createGeometry = function () {
-            let material = new THREE.MeshLambertMaterial({
+            /** Lambertian Material
+            */
+            // let material = new THREE.MeshLambertMaterial({
+            //     side: THREE.DoubleSide,
+            //     color: 0x7fc5f9,
+            //     emissive: 0x25673d,
+            //     emissiveIntensity: 0.5
+            // });
+            let material = new THREE.MeshPhongMaterial({
                 side: THREE.DoubleSide,
                 color: 0x7fc5f9,
                 emissive: 0x25673d,
-                emissiveIntensity: 0.5
-            });
+                emissiveIntensity: 0.5,
+                shininess: 100,
+                specular: 0x9d0a00
+            })
             let geometry = new THREE.BoxGeometry(3, 3, 3);
             cube = new THREE.Mesh(geometry, material);
             cube.position.x = -6;
@@ -57,10 +67,10 @@
             showAxisHelper()
 
             // create light
-            var light = new THREE.AmbientLight(0xffffff, 0.5);
+            light = new THREE.AmbientLight(0xffffff, 0.5);
             scene.add(light);
 
-            var light2 = new THREE.PointLight(0xffffff, 0.5);
+            light2 = new THREE.PointLight(0xffffff, 0.5);
             scene.add(light2);
 
             // create the renderer   
