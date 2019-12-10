@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>7 - Depth Material basics</title>
+    <title>7 - Line Material basics</title>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/109/three.min.js"></script> -->
     <script src="three.min.js"></script>
 </head>
@@ -13,19 +13,14 @@
         STEP = 0.1
 
         let createGeometry = function () {
-            cubeGeometry = new THREE.BoxGeometry(5, 5, 5);
-            sphereGeometry = new THREE.SphereGeometry(5,128,128)
-            materialBasic = new THREE.MeshNormalMaterial();
+            // cubeGeometry = new THREE.BoxGeometry(5, 5, 5);
+            sphereGeometry = new THREE.SphereGeometry(5,30,30)
+            materialNormal = new THREE.MeshNormalMaterial();
+            materialBasic = new THREE.MeshBasicMaterial();
             material = new THREE.MeshDepthMaterial()
-            cube1 = new THREE.Mesh(cubeGeometry, materialBasic)
-            cube2 = new THREE.Mesh(cubeGeometry, material);
-            sphere1 = new THREE.Mesh(sphereGeometry, material)
-            
-            cube1.position.x = -15
-            cube2.position.x = 15
+            materialLine = new THREE.LineBasicMaterial({color: 0xff0000, linewidth: 1})
+            sphere1 = new THREE.Line(sphereGeometry, materialBasic)
 
-            scene.add(cube1);
-            scene.add(cube2);
             scene.add(sphere1)
         };
 
@@ -57,19 +52,13 @@
 
         // main animation loop - calls every 50-60 ms
         let render = function () {
-            cube2.rotation.x += STEP/10
-            cube2.rotation.y += STEP/10
-       
-            cube1.rotation.x += STEP/10
-            cube1.rotation.y += STEP/10
-            
-            // sphere1.position.z += STEP
+            sphere1.rotation.x += STEP/10
+            sphere1.rotation.y += STEP/10
             sphere1.position.z -= STEP
-            cube2.position.z += STEP
-            if (cube2.position.z > 16 || cube2.position.z < -16) {
+            // cube2.position.z += STEP
+            if (sphere1.position.z > 10 || sphere1.position.z < -10) {
                 STEP *= -1
             }
-
             renderer.render(scene, camera);
             // RAF
             requestAnimationFrame(render);
