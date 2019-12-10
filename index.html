@@ -14,20 +14,26 @@
 
         let createGeometry = function () {
             geometry = new THREE.BoxGeometry(5, 5, 5);
-            // material = new THREE.MeshBasicMaterial(
-            //     {
-            //         wireframe: true,
-            //         color: 0Xff0040, 
-            //         // transparent: true,
-            //         opacity: 0.8
-            //     });
+            materialBasic = new THREE.MeshBasicMaterial(
+                {
+                    // wireframe: true,
+                    color: 0Xff0040, 
+                    transparent: true,
+                    opacity: 0.8
+                });
             material = new THREE.MeshNormalMaterial()
+            cube1 = new THREE.Mesh(geometry, materialBasic)
             cube2 = new THREE.Mesh(geometry, material);
             normals = new THREE.FaceNormalsHelper(cube2, 8);
+            normalsCube1 = new THREE.FaceNormalsHelper(cube1, 8);
+            
+            cube1.position.x = -15
+            cube2.position.x = 15
 
-            // scene.add(sphere1);
+            scene.add(cube1);
             scene.add(cube2);
             scene.add(normals)
+            scene.add(normalsCube1)
         };
 
         let showAxisHelper = () => {
@@ -60,7 +66,11 @@
         let render = function () {
             cube2.rotation.x += STEP
             cube2.rotation.y += STEP
+       
+            cube1.rotation.x += STEP
+            cube1.rotation.y += STEP
             normals.update()
+            normalsCube1.update()
             renderer.render(scene, camera);
             // RAF
             requestAnimationFrame(render);
