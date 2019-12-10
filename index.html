@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>7 - Line Material basics</title>
+    <title>7 - Lambart, Phong and Standard Material</title>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/109/three.min.js"></script> -->
     <script src="three.min.js"></script>
 </head>
@@ -9,51 +9,53 @@
 <body>
     <script>
         let scene, camera, renderer, cube, sphere, cone, light, light2;
-        let cubes = []
+        let shapes = []
         STEP = 0.1
 
         let createGeometry = function () {
-            /** Lambertian Material
-            */
-            // let material = new THREE.MeshLambertMaterial({
-            //     side: THREE.DoubleSide,
-            //     color: 0x7fc5f9,
-            //     emissive: 0x25673d,
-            //     emissiveIntensity: 0.5
-            // });
-            // phong material
-            // let material = new THREE.MeshPhongMaterial({
-            //     side: THREE.DoubleSide,
-            //     color: 0x7fc5f9,
-            //     emissive: 0x25673d,
-            //     emissiveIntensity: 0.5,
-            //     shininess: 100,
-            //     specular: 0x9d0a00
-            // })
-            // standard material
-            let material = new THREE.MeshStandardMaterial({
-                side: THREE.DoubleSide,
-                color: 0x7fc5f9,
-                emissive: 0x25673d,
-                emissiveIntensity: 0.4,
-                metalness: 0.5,
-                roughness: 1
-            });
-            let geometry = new THREE.BoxGeometry(3, 3, 3);
-            cube = new THREE.Mesh(geometry, material);
-            cube.position.x = -6;
+            let materials = [
+                new THREE.MeshLambertMaterial({
+                    side: THREE.DoubleSide,
+                    color: 0x7fc5f9,
+                    emissive: 0x25673d,
+                    emissiveIntensity: 0.5
+                }),
+                new THREE.MeshPhongMaterial({
+                    side: THREE.DoubleSide,
+                    color: 0x7fc5f9,
+                    emissive: 0x25673d,
+                    emissiveIntensity: 0.5,
+                    shininess: 100,
+                    specular: 0x9d0a00
+                }),
+                new THREE.MeshStandardMaterial({
+                    side: THREE.DoubleSide,
+                    color: 0x7fc5f9,
+                    emissive: 0x25673d,
+                    emissiveIntensity: 0.4,
+                    metalness: 0,
+                    roughness: 0.5
+                })
+            ];
 
-            geometry = new THREE.SphereGeometry(3, 30, 30);
-            sphere = new THREE.Mesh(geometry, material);
-            sphere.position.x = 0;
+            let geometryBox = new THREE.BoxGeometry(3, 3, 3);
+            let geometrySphere = new THREE.SphereGeometry(3, 30, 30);
+            let geometryCone = new THREE.ConeGeometry(3, 4, 20, 1, true);
 
-            geometry = new THREE.ConeGeometry(3, 4, 20, 1, true);
-            cone = new THREE.Mesh(geometry, material);
-            cone.position.x = 7;
+            for (let i = 0; i < 3; i++) {
+                let currIndex = i * 3;
+                shapes.push(new THREE.Mesh(geometryBox, materials[i]));
+                shapes.push(new THREE.Mesh(geometrySphere, materials[i]));
+                shapes.push(new THREE.Mesh(geometryCone, materials[i]));
+                shapes[currIndex].position.x = -7;
+                shapes[currIndex + 2].position.x = 7;
+                for (let j = currIndex; j < currIndex + 3; j++)
+                    shapes[j].position.y = 7 - 7 * i;
+            }
 
-            scene.add(cube);
-            scene.add(sphere);
-            scene.add(cone);
+
+
+            shapes.forEach(shape => scene.add(shape));
         };
 
         let showAxisHelper = () => {
@@ -92,9 +94,10 @@
 
         // main animation loop - calls every 50-60 ms
         let render = function () {
-            cube.rotation.y += STEP
-            sphere.rotation.y += STEP
-            cone.rotation.y += STEP
+            shapes.forEach(shape => {
+                shape.rotation.x += STEP;
+                shape.rotation.y += STEP;
+            });
             renderer.render(scene, camera);
             // RAF
             requestAnimationFrame(render);
