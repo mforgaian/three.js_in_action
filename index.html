@@ -10,7 +10,7 @@
     <script>
         let scene, camera, renderer, cube1, cube2, sphere1, normals;
         let cubes = []
-        STEP = 0.01
+        STEP = 0.1
 
         let createGeometry = function () {
             cubeGeometry = new THREE.BoxGeometry(5, 5, 5);
@@ -22,12 +22,12 @@
                     transparent: true,
                     opacity: 0.8
                 });
-            material = new THREE.MeshNormalMaterial()
+            material = new THREE.MeshDepthMaterial()
             cube1 = new THREE.Mesh(cubeGeometry, materialBasic)
             cube2 = new THREE.Mesh(cubeGeometry, material);
             sphere1 = new THREE.Mesh(sphereGeometry, material)
-            normals = new THREE.FaceNormalsHelper(cube2, 8);
-            normalsCube1 = new THREE.FaceNormalsHelper(cube1, 8);
+            // normals = new THREE.FaceNormalsHelper(cube2, 8);
+            // normalsCube1 = new THREE.FaceNormalsHelper(cube1, 8);
             
             cube1.position.x = -15
             cube2.position.x = 15
@@ -35,8 +35,8 @@
             scene.add(cube1);
             scene.add(cube2);
             scene.add(sphere1)
-            scene.add(normals)
-            scene.add(normalsCube1)
+            // scene.add(normals)
+            // scene.add(normalsCube1)
         };
 
         let showAxisHelper = () => {
@@ -67,17 +67,21 @@
 
         // main animation loop - calls every 50-60 ms
         let render = function () {
-            cube2.rotation.x += STEP
-            cube2.rotation.y += STEP
+            cube2.rotation.x += STEP/10
+            cube2.rotation.y += STEP/10
        
-            cube1.rotation.x += STEP
-            cube1.rotation.y += STEP
+            cube1.rotation.x += STEP/10
+            cube1.rotation.y += STEP/10
             
             // sphere1.position.z += STEP
-            sphere1.rotation.y += STEP
+            sphere1.position.z -= STEP
+            cube2.position.z += STEP
+            if (cube2.position.z > 16 || cube2.position.z < -16) {
+                STEP *= -1
+            }
 
-            normals.update()
-            normalsCube1.update()
+            // normals.update()
+            // normalsCube1.update()
             renderer.render(scene, camera);
             // RAF
             requestAnimationFrame(render);
