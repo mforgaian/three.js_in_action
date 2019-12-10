@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>2 - Display Sphere</title>
+    <title>14 - rain of cubes</title>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/109/three.min.js"></script> -->
     <script src="three.min.js"></script>
 </head>
@@ -19,7 +19,8 @@
 
         let createCube = () => {
             let geometry = new THREE.BoxGeometry(1, 1, 1);
-            let material = new THREE.MeshBasicMaterial({ color: Math.random() * 0xffffff });
+            // let material = new THREE.MeshBasicMaterial({ color: Math.random() * 0xffffff });
+            let material = new THREE.MeshStandardMaterial({ color: Math.random() * 0xffffff });
             cube = new THREE.Mesh(geometry, material);
             cube.position.x = randomInRange(-15, 15)
             cube.position.z = randomInRange(-15, 15)
@@ -63,6 +64,7 @@
             camera.position.y = -10;
             // createSphere()
             createCube()
+            // scene.add(new THREE.AmbientLight(0xffffff,1))
             // showAxisHelper()
             // create the renderer   
             renderer = new THREE.WebGLRenderer();
