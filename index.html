@@ -21,14 +21,24 @@
             //     emissive: 0x25673d,
             //     emissiveIntensity: 0.5
             // });
-            let material = new THREE.MeshPhongMaterial({
+            // phong material
+            // let material = new THREE.MeshPhongMaterial({
+            //     side: THREE.DoubleSide,
+            //     color: 0x7fc5f9,
+            //     emissive: 0x25673d,
+            //     emissiveIntensity: 0.5,
+            //     shininess: 100,
+            //     specular: 0x9d0a00
+            // })
+            // standard material
+            let material = new THREE.MeshStandardMaterial({
                 side: THREE.DoubleSide,
                 color: 0x7fc5f9,
                 emissive: 0x25673d,
-                emissiveIntensity: 0.5,
-                shininess: 100,
-                specular: 0x9d0a00
-            })
+                emissiveIntensity: 0.4,
+                metalness: 0.5,
+                roughness: 1
+            });
             let geometry = new THREE.BoxGeometry(3, 3, 3);
             cube = new THREE.Mesh(geometry, material);
             cube.position.x = -6;
