@@ -8,12 +8,13 @@
 
 <body>
     <script>
-        let scene, camera, renderer, cube, normals;
+        let scene, camera, renderer, cube1, cube2, sphere1, normals;
         let cubes = []
         STEP = 0.01
 
         let createGeometry = function () {
-            geometry = new THREE.BoxGeometry(5, 5, 5);
+            cubeGeometry = new THREE.BoxGeometry(5, 5, 5);
+            sphereGeometry = new THREE.SphereGeometry(5,128,128)
             materialBasic = new THREE.MeshBasicMaterial(
                 {
                     // wireframe: true,
@@ -22,8 +23,9 @@
                     opacity: 0.8
                 });
             material = new THREE.MeshNormalMaterial()
-            cube1 = new THREE.Mesh(geometry, materialBasic)
-            cube2 = new THREE.Mesh(geometry, material);
+            cube1 = new THREE.Mesh(cubeGeometry, materialBasic)
+            cube2 = new THREE.Mesh(cubeGeometry, material);
+            sphere1 = new THREE.Mesh(sphereGeometry, material)
             normals = new THREE.FaceNormalsHelper(cube2, 8);
             normalsCube1 = new THREE.FaceNormalsHelper(cube1, 8);
             
@@ -32,6 +34,7 @@
 
             scene.add(cube1);
             scene.add(cube2);
+            scene.add(sphere1)
             scene.add(normals)
             scene.add(normalsCube1)
         };
@@ -69,6 +72,10 @@
        
             cube1.rotation.x += STEP
             cube1.rotation.y += STEP
+            
+            // sphere1.position.z += STEP
+            sphere1.rotation.y += STEP
+
             normals.update()
             normalsCube1.update()
             renderer.render(scene, camera);
