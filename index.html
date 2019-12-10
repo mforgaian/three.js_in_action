@@ -13,21 +13,22 @@
         STEP = 0.1
 
         let createGeometry = function () {
-            // cubeGeometry = new THREE.BoxGeometry(5, 5, 5);
-            sphereGeometry = new THREE.SphereGeometry(5,5,5)
+            cubeGeometry = new THREE.BoxGeometry(5, 5, 5);
+            sphereGeometry = new THREE.SphereGeometry(5, 5, 5)
             materialNormal = new THREE.MeshNormalMaterial();
-            materialBasic = new THREE.MeshBasicMaterial();
+            materialBasic = new THREE.MeshBasicMaterial({color: 0xfff012});
             material = new THREE.MeshDepthMaterial()
-            materialLine = new THREE.LineBasicMaterial({color: 0xff0000, linewidth: 1})
-            materialLineDashed = new THREE.LineDashedMaterial({color: 0xff0000, linewidth: 1, dashSize: 1, graphSize: 1})
-            materialPoints = new THREE.PointsMaterial({color: 0xff0000})
+            materialLine = new THREE.LineBasicMaterial({ color: 0xff0000, linewidth: 1 })
+            materialLineDashed = new THREE.LineDashedMaterial({ color: 0xff0000, linewidth: 1, dashSize: 1, graphSize: 1 })
+            materialPoints = new THREE.PointsMaterial({ color: 0x000000 })
             // sphere1 = new THREE.Mesh(sphereGeometry, materialBasic)
             // sphere1 = new THREE.Line(sphereGeometry, materialLine)
             sphere1 = new THREE.Points(sphereGeometry, materialPoints)
             // sphere1 = new THREE.Line(sphereGeometry, materialBasic)
             // sphere1 = new THREE.Line(sphereGeometry, materialLineDashed)
-            
+            cube1 = new THREE.Mesh(cubeGeometry, materialBasic)
             scene.add(sphere1)
+            scene.add(cube1)
             // sphereGeometry.computeLineDistances();
         };
 
@@ -41,7 +42,7 @@
         let init = function () {
             // create the scene
             scene = new THREE.Scene();
-            // scene.background = new THREE.Color(0xf7859f);
+            scene.background = new THREE.Color(0xf7859f);
             // play with changing background here
             // create an locate the camera
             camera = new THREE.PerspectiveCamera(75,
@@ -50,6 +51,14 @@
             camera.position.z = 30;
             createGeometry()
             showAxisHelper()
+
+            // create light
+            var light = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(light);
+
+            var light2 = new THREE.PointLight(0xffffff, 0.5);
+            scene.add(light2);
+
             // create the renderer   
             renderer = new THREE.WebGLRenderer();
             renderer.setSize(window.innerWidth, window.innerHeight);
@@ -59,8 +68,8 @@
 
         // main animation loop - calls every 50-60 ms
         let render = function () {
-            sphere1.rotation.x += STEP/10
-            sphere1.rotation.y += STEP/10
+            sphere1.rotation.x += STEP / 10
+            sphere1.rotation.y += STEP / 10
             sphere1.position.z -= STEP
             // cube2.position.z += STEP
             if (sphere1.position.z > 10 || sphere1.position.z < -10) {
