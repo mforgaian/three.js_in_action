@@ -10,7 +10,7 @@
     <script>
         let scene, camera, renderer, cube, normals;
         let cubes = []
-        STEP = 0.1
+        STEP = 0.01
 
         let createGeometry = function () {
             geometry = new THREE.BoxGeometry(5, 5, 5);
@@ -23,7 +23,7 @@
             //     });
             material = new THREE.MeshNormalMaterial()
             cube2 = new THREE.Mesh(geometry, material);
-            normals = new THREE.FaceNormalsHelper(cube2, 5);
+            normals = new THREE.FaceNormalsHelper(cube2, 8);
 
             // scene.add(sphere1);
             scene.add(cube2);
@@ -40,22 +40,19 @@
         let init = function () {
             // create the scene
             scene = new THREE.Scene();
-            scene.background = new THREE.Color(0xf7859f);
+            // scene.background = new THREE.Color(0xf7859f);
             // play with changing background here
             // create an locate the camera
-
             camera = new THREE.PerspectiveCamera(75,
                 window.innerWidth / window.innerHeight,
                 1, 1000);
-            camera.position.z = 20;
-            camera.position.y = -10;
+            camera.position.z = 30;
             createGeometry()
-            // showAxisHelper()
+            showAxisHelper()
             // create the renderer   
             renderer = new THREE.WebGLRenderer();
             renderer.setSize(window.innerWidth, window.innerHeight);
             document.body.appendChild(renderer.domElement);
-
         };
 
 
@@ -64,7 +61,6 @@
             cube2.rotation.x += STEP
             cube2.rotation.y += STEP
             normals.update()
-            // cubes.forEach(d => d.position.y -= STEP);
             renderer.render(scene, camera);
             // RAF
             requestAnimationFrame(render);
