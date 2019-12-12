@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>15 - keyboard interaction </title>
+    <title>16 - mouse event interaction </title>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/109/three.min.js"></script> -->
     <script src="three.min.js"></script>
 </head>
@@ -24,6 +24,11 @@
             mouse.z = 1
             console.log(mouse)
             raycast.setFromCamera(mouse, camera)
+            let intersects = raycast.intersectObjects(scene.children)
+            intersects.forEach(obj => {
+                obj.object.material.color.set(0xff0000)
+                obj.object.position.y =3
+            })
         }
 
         let createCube = () => {
@@ -73,11 +78,6 @@
         // main animation loop - calls every 50-60 ms
         let render = function () {
             camera.position.z -= 0.1
-            let intersects = raycast.intersectObjects(scene.children)
-            intersects.forEach(obj => {
-                obj.object.material.color.set(0xff0000)
-                obj.object.position.y =3
-            })
             renderer.render(scene, camera);
             // RAF
             requestAnimationFrame(render);
