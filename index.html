@@ -20,7 +20,14 @@
         let createCube = () => {
             let geometry = new THREE.BoxGeometry(1, 1, 1);
             // let material = new THREE.MeshBasicMaterial({ color: Math.random() * 0xffffff });
-            let material = new THREE.MeshStandardMaterial({ color: Math.random() * 0xffffff });
+            let material = new THREE.MeshPhongMaterial({ 
+                color: Math.random() * 0xffffff ,
+                side: THREE.DoubleSide,
+                emissive: 0x25673d,
+                emissiveIntensity: 0.5,
+                shininess: 100,
+                specular: 0x9d0a00
+                });
             cube = new THREE.Mesh(geometry, material);
             cube.position.x = randomInRange(-15, 15)
             cube.position.z = randomInRange(-15, 15)
