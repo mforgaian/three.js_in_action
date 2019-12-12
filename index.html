@@ -27,7 +27,7 @@
             // let material = new THREE.MeshBasicMaterial({ color: Math.random() * 0xffffff });
             cube = new THREE.Mesh(geometry, material);
             cube.position.x = randomInRange(-40, 40)
-            cube.position.z = randomInRange(-100, 100)
+            cube.position.z = randomInRange(-1000, 0)
             cubes.push(cube)
         }
 
@@ -60,7 +60,7 @@
             light = new THREE.DirectionalLight(0xffffff)
             light.position.z = 10
             scene.add(light)
-            for (let i = 0; i <= 150; i++)
+            for (let i = 0; i <= 1000; i++)
                 createCube()
             cubes.forEach(cube => scene.add(cube))
             // create the renderer   
