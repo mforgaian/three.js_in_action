@@ -1,16 +1,17 @@
 <html>
 
 <head>
-    <title>14 - rain of cubes</title>
+    <title>15 - keyboard interaction </title>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/109/three.min.js"></script> -->
     <script src="three.min.js"></script>
 </head>
 
 <body>
     <script>
-        let scene, camera, renderer, cube, sphere;
+        let scene, camera, renderer, light;
         let cubes = []
-        STEP = 0.1
+        STEP = 1
+        const LEFT = 37, RIGHT = 39, UP = 38, DOWN = 40;
 
         let randomInRange = function (from, to) {
             let x = Math.random() * (to - from);
@@ -18,41 +19,28 @@
         };
 
         let createCube = () => {
-            let geometry = new THREE.BoxGeometry(1, 1, 1);
+            let w = randomInRange(1, 3)
+            let h = randomInRange(1, 3)
+            let d = randomInRange(1, 3)
+            let geometry = new THREE.BoxGeometry(w, h, d)
+            let material = new THREE.MeshLambertMaterial({ color: Math.random() * 0xffffff });
             // let material = new THREE.MeshBasicMaterial({ color: Math.random() * 0xffffff });
-            let material = new THREE.MeshPhongMaterial({ 
-                color: Math.random() * 0xffffff ,
-                side: THREE.DoubleSide,
-                emissive: 0x25673d,
-                emissiveIntensity: 0.5,
-                shininess: 100,
-                specular: 0x9d0a00
-                });
             cube = new THREE.Mesh(geometry, material);
-            cube.position.x = randomInRange(-15, 15)
-            cube.position.z = randomInRange(-15, 15)
-            cube.position.y = 15
-            scene.add(cube);
+            cube.position.x = randomInRange(-40, 40)
+            cube.position.z = randomInRange(-100, 100)
             cubes.push(cube)
-        };
+        }
 
-        let createSphere = function () {
-            // radius, horizontal segments, vertical segments, angle
-            let geometry = new THREE.SphereGeometry(5, 30, 30, 0, Math.PI,
-                0, Math.PI);
-
-            let material = new THREE.MeshBasicMaterial({
-                color: 0xffffff,
-                wireframe: true
-            });
-
-            sphere = new THREE.Mesh(geometry, material);
-            scene.add(sphere);
-        };
-
-        let showAxisHelper = () => {
-            let axisHelper = new THREE.AxisHelper()
-            scene.add(axisHelper)
+        let onKeyDown = function(e){
+            if (e.keyCode === LEFT) {
+                camera.position.x -= 0.2
+            }else if(e.keyCode === RIGHT){
+                camera.position.x += 0.2
+            }else if(e.keyCode === UP){
+                camera.position.y += 0.2
+            }else if(e.keyCode === DOWN){
+                camera.position.y -= 0.2
+            }
         }
 
         // set up the environment - 
@@ -60,34 +48,32 @@
         let init = function () {
             // create the scene
             scene = new THREE.Scene();
-            scene.background = new THREE.Color(0xa10b00);
+            scene.background = new THREE.Color(0xffffee);
             // play with changing background here
             // create an locate the camera
 
             camera = new THREE.PerspectiveCamera(75,
                 window.innerWidth / window.innerHeight,
-                1, 1000);
-            camera.position.z = 20;
-            camera.position.y = -10;
-            // createSphere()
-            createCube()
-            // scene.add(new THREE.AmbientLight(0xffffff,1))
-            // showAxisHelper()
+                1, 1000)
+            camera.position.z = 20
+            camera.position.y = 1
+            light = new THREE.DirectionalLight(0xffffff)
+            light.position.z = 10
+            scene.add(light)
+            for (let i = 0; i <= 150; i++)
+                createCube()
+            cubes.forEach(cube => scene.add(cube))
             // create the renderer   
             renderer = new THREE.WebGLRenderer();
             renderer.setSize(window.innerWidth, window.innerHeight);
             document.body.appendChild(renderer.domElement);
-
+            document.addEventListener('keydown', onKeyDown, false)
         };
 
 
         // main animation loop - calls every 50-60 ms
         let render = function () {
-            let x = Math.random();
-            if (x < 0.1)
-                createCube()
-
-            cubes.forEach(d => d.position.y -= STEP);
+            camera.position.z -= 0.1
             renderer.render(scene, camera);
             // RAF
             requestAnimationFrame(render);
